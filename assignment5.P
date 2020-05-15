@@ -1,0 +1,48 @@
+
+%1
+maxodd([],0).
+maxodd([X],X).
+maxodd([X,Y|Xs], Res) :-
+	maxodd(Xs, Res1),
+	(   
+    X > Res1 -> Res is X;
+      Res is Res1
+  ).
+	
+%2
+deleteNList(0,L,Res):- Res = L.
+deleteNList(N,[],Res):- Res = [].
+deleteNList(N,L,Res):- delete(L,N,N,Res).
+
+delete([],K,N,Res):- Res = [].
+delete([H|T],K,N,[H|Res]):- 
+    (   
+    	K > 1 -> K1 is K-1,
+        delete(T,K1,N,Res)
+    ).
+delete([H|T],K,N,Res):- 
+    (  
+    	K==1 -> delete(T,N,N,Res)
+    ).
+	
+%3
+replace_first([],X,Y,Res):- Res = [].
+replace_first([H|T],X,Y,Res):- 
+    (   
+    	H==X -> Res = [Y|T];
+    	replace_first(T,X,Y,Res1),
+    	  Res = [H|Res1]
+    ).
+
+%4
+position(X,[],Res):- Res = [].
+position(X,L,Res):- getPosition(1,X,L,Res).
+getPosition(N,X,[],Res):- Res = [].
+getPosition(N,X,[H|T],Res):-
+    (   
+    	H == X -> N1 is N+1, 
+    	getPosition(N1,X,T,Res1),
+        Res = [N|Res1];
+    	N1 is N+1, 
+    	  getPosition(N1,X,T,Res)
+    ).
